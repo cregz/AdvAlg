@@ -6,7 +6,7 @@ int main()
 {
 	SmallestBoundaryPolygonSolver solver;
 	std::cout << "Solution: " << std::endl;
-	solver.solve(4, 200000);
+	solver.solve(8, 200000);
     return 0;
 }
 

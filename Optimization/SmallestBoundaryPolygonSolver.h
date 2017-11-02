@@ -12,6 +12,7 @@ private:
 	int maxY;
 	Point movePoint(Point p);
 	void setBoundaries();
+	void generateFirstSolution(unsigned numOfPoints);
 public:
 	SmallestBoundaryPolygonSolver();
 	~SmallestBoundaryPolygonSolver();
