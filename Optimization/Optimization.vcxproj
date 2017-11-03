@@ -14,7 +14,7 @@
     <ProjectGuid>{44469BD7-B22E-476D-BF84-CCA7D1D9968A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Optimization</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
     <ProjectName>Optimization</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

@@ -7,9 +7,20 @@
 
 Point SmallestBoundaryPolygonSolver::movePoint(Point p)
 {
-	Point returnVal = Point(p);
-	returnVal.x += randomUniform(-5, 5);
-	returnVal.y += randomUniform(-5, 5);
+	Point returnVal = Point(p);  //make copy
+	bool isUnique = false;
+	do {
+		Point temp = Point(returnVal);
+		temp.x += randomUniform(-10, 10);
+		temp.y += randomUniform(-10, 10);
+		auto asd = std::find_if(solution.begin(), solution.end(), [&temp](const Point& elem) {return elem.x == temp.x && elem.y == temp.y; });
+		if (asd == std::end(solution)) {
+			isUnique = true;
+			returnVal = temp;
+		}
+
+	} while (!isUnique);
+	
 	return returnVal;
 }
 
@@ -34,8 +45,9 @@ void SmallestBoundaryPolygonSolver::setBoundaries()
 }
 
 SmallestBoundaryPolygonSolver::SmallestBoundaryPolygonSolver()
+	: logger("smallestBoundary.txt")
 {
-	loadPointsFromFile("C:\\Users\\I345182\\source\\repos\\AdvAlg\\Bin\\Environment\\Input\\Points.txt");
+	loadPointsFromFile("../Environment/Input/Points.txt");
 	setBoundaries();
 
 }
@@ -50,15 +62,36 @@ void SmallestBoundaryPolygonSolver::generateFirstSolution(unsigned numOfPoints){
 	for (size_t i = 0; i < numOfPoints; i++)
 	{
 		Point p;
-		int xOrY = randomUniform(0, 1);
-		if (xOrY == 0) {
-			p.x = randomUniform(0, 1) == 1 ? minX : randomUniform(maxX, maxX + 10);
-			p.y = randomUniform(minY, maxY);
-		}
-		else {
-			p.x = randomUniform(minX, maxX);
-			p.y = randomUniform(0, 1) == 1 ? minY : randomUniform(maxY, maxY + 10);
-		}
+		bool isUnique = false;
+		do {
+			int xDiff = maxX - minX;
+			int yDiff = maxY - minY;
+			int x = randomUniform(minX-100, maxX+100);
+			int y = randomUniform(minY-100, maxY+100);
+			int xOrY = randomUniform(0, 2);
+			if (xOrY == 0 || xOrY == 2) {
+				if (x <= xDiff / 2 + minX)
+					x -= (int)xDiff / 2;
+				else
+					x += (int)xDiff / 2;
+			}
+			if (xOrY == 1 || xOrY == 2) {
+				if (y <= yDiff / 2 + minY)
+					y -= (int)yDiff / 2;
+				else
+					y += (int)yDiff / 2;
+			}
+			p.x = x;
+			p.y = y;
+			if (solution.size() != 0) {
+				auto asd = std::find_if(solution.begin(), solution.end(), [&p](const Point& elem) {return elem.x == p.x && elem.y == p.y; });
+				if (asd == std::end(solution))
+					isUnique = true;
+			}
+			else {
+				isUnique = true;
+			}
+		} while (!isUnique);
 		solution.push_back(p);
 	}
 	float avgX = solution.at(0).x;
@@ -85,7 +118,7 @@ void SmallestBoundaryPolygonSolver::generateFirstSolution(unsigned numOfPoints){
 			return s.y > f.y;
 		}
 
-		//cross product center -> a x center -> b
+		//cross product (center -> a) x (center -> b)
 		float det = (f.x - avgX) * (s.y - avgY) - (s.x - avgX) * (f.y - avgY);
 		if (det < 0)
 			return true;
@@ -101,26 +134,56 @@ void SmallestBoundaryPolygonSolver::generateFirstSolution(unsigned numOfPoints){
 
 }
 
-void SmallestBoundaryPolygonSolver::solve(unsigned numOfPoints, unsigned itermax)
+void SmallestBoundaryPolygonSolver::solve(unsigned numOfPoints, unsigned itermax, bool isLoggingToFile)
 {
 	//randomly generate first solution
 	generateFirstSolution(numOfPoints);
 	int i = 0;
-	while (i < itermax || constraint(solution) < 0) {
+	if (isLoggingToFile) {
+		for (auto& p : points) {
+			logger.putPoint(p.x, p.y, "red");
+		}
+	}
+	while (constraint(solution) < 0) {
 		unsigned whichPoint = randomUniform(0, solution.size() - 1);
 		float s = constraint(solution);
 		float currentSolution = objective(solution);
 		Point p = movePoint(solution.at(whichPoint));
 		Point temp = solution.at(whichPoint);
 		solution.at(whichPoint) = p;
-		if ((objective(solution) > currentSolution && constraint(solution) >= 0) || constraint(solution) < s) {
+		if (constraint(solution) < s) {
 			solution.at(whichPoint) = temp;
 		}
-		
-		if(s >= 0) 
-			i++;
+	}
+	logger.putInfo("Starting");
+	while (i < itermax) {
+		unsigned whichPoint = randomUniform(0, solution.size() - 1);
+		float s = constraint(solution);
+		float currentSolution = objective(solution);
+		if (isLoggingToFile) {
+			logger.putIteration(i);
+			logger.putFitness(currentSolution);
+			logger.putInfo(std::to_string(s));
+			for (auto& p : solution) {
+				logger.putPoint(p.x, p.y, "green");
+			}
+		}
+		Point p = movePoint(solution.at(whichPoint));
+		Point temp = solution.at(whichPoint);
+		solution.at(whichPoint) = p;
+		if (objective(solution) > currentSolution || constraint(solution) < s )  {
+			solution.at(whichPoint) = temp;
+		}
+	
+		i++;
+	}
+	if (isLoggingToFile) {
+		logger.putIteration(i);
+		logger.putFitness(objective(solution));
+		for (auto& p : solution) {
+			logger.putPoint(p.x, p.y, "green");
+		}
 	}
 	std::cout << "Solution " << i << ". iter: " << std::endl;
 	printOutPoints(solution);
-	
 }

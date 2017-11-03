@@ -1,10 +1,12 @@
 #pragma once
 #include "SmallestBoundaryPolygon.h"
+#include "../Utils/Animlog.h"
 
 class SmallestBoundaryPolygonSolver :
 	public SmallestBoundaryPolygonProblem
 {
 private:
+	Animlog logger;
 	std::vector<Point> solution;
 	int minX;
 	int maxX;
@@ -16,6 +18,6 @@ private:
 public:
 	SmallestBoundaryPolygonSolver();
 	~SmallestBoundaryPolygonSolver();
-	void solve(unsigned numOfPoints, unsigned itermax);
+	void solve(unsigned numOfPoints, unsigned itermax, bool isLoggingToFile = false);
 };
 

@@ -45,7 +45,8 @@ void SmallestBoundaryPolygonProblem::printOutPoints(vector<Point> pointVector) {
 //
 float SmallestBoundaryPolygonProblem::distanceFromLine(Point lp1, Point lp2, Point p) {
 	// https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-	return ((lp2.y - lp1.y)*p.x - (lp2.x - lp1.x)*p.y + lp2.x*lp1.y - lp2.y*lp1.x) / sqrt(pow(lp2.y - lp1.y, 2) + pow(lp2.x - lp1.x, 2));
+	float returnValue = ((lp2.y - lp1.y)*p.x - (lp2.x - lp1.x)*p.y + lp2.x*lp1.y - lp2.y*lp1.x) / sqrt(pow(lp2.y - lp1.y, 2) + pow(lp2.x - lp1.x, 2));
+	return returnValue;
 }
 
 
