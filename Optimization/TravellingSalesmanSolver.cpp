@@ -59,13 +59,56 @@ std::pair<Path, Path> TravellingSalesmanSolver::singlePointCrossover(const Path&
 	size_t i = 0;
 	for (; i < point; i++)
 	{
-		c1.push_back(p1.getPath().at(i));
-		c2.push_back(p2.getPath().at(i));
-	}
-	for (; i < p1.getPath().size(); i++)
-	{
 		c1.push_back(p2.getPath().at(i));
 		c2.push_back(p1.getPath().at(i));
+	}
+	for (size_t j = 0; j < point; j++)
+	{
+		const Town& t = p1.getPath().at(j);
+		size_t k = 0;
+		for (;k < c1.size(); k++)
+		{
+			if (t.x == c1.at(k).x && t.y == c1.at(k).y)
+				break;
+		}
+		if (k == c1.size())
+			c1.push_back(t);
+	}
+	for (size_t j = 0; j < point; j++)
+	{
+		const Town& t = p2.getPath().at(j);
+		size_t k = 0;
+		for (; k < c2.size(); k++)
+		{
+			if (t.x == c2.at(k).x && t.y == c2.at(k).y)
+				break;
+		}
+		if (k == c2.size())
+			c2.push_back(t);
+	}
+	
+
+	for (; i < p1.getPath().size(); i++)
+	{
+		const Town& t1 = p1.getPath().at(i);
+		const Town& t2 = p2.getPath().at(i);
+		size_t j = 0;
+		for (; j < c1.size(); j++)
+		{
+			if (t1.x == c1.at(j).x && t1.y == c1.at(j).y)
+				break;
+		}
+		if (j == c1.size())
+			c1.push_back(t1);
+		
+		j = 0;
+		for (; j < c2.size(); j++)
+		{
+			if (t2.x == c2.at(j).x && t2.y == c2.at(j).y)
+				break;
+		}
+		if (j == c2.size())
+			c2.push_back(t2);
 	}
 
 	Path child1 = Path(c1);
@@ -99,7 +142,7 @@ void TravellingSalesmanSolver::solve(unsigned populationSize, unsigned itermax)
 		std::vector<unsigned> parents = selectParents(matingPoolSize);
 		std::vector<std::pair<unsigned, unsigned>> parentPairs = generatePairs(parents);
 		std::vector<Path> children;
-		for (size_t i = 0; i < populationSize / 2; i++)
+		for (size_t i = 0; i < matingPoolSize; i++)
 		{
 			int whichParents = randomUniform(0, parentPairs.size()-1);
 			auto& parent1 = population.at(parentPairs.at(whichParents).first);
@@ -116,7 +159,7 @@ void TravellingSalesmanSolver::solve(unsigned populationSize, unsigned itermax)
 		});
 		bestSolution = children.at(0);
 		population = children;
-		std::cout << population.at(0).getFitness() << std::endl;
+		//std::cout << population.at(0).getFitness() << std::endl;
 		i++;
 	}
 	std::cout << "Best solution: " << std::endl << population.at(0).getFitness() << std::endl;
