@@ -90,6 +90,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TravellingSalesman.h" />
+    <ClInclude Include="TravellingSalesmanSolver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PathFinding.cpp" />
@@ -101,6 +102,7 @@
     </ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TravellingSalesman.cpp" />
+    <ClCompile Include="TravellingSalesmanSolver.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
