@@ -55,7 +55,7 @@ std::pair<Path, Path> TravellingSalesmanSolver::singlePointCrossover(const Path&
 	std::vector<Town> c1;
 	std::vector<Town> c2;
 	std::vector<Town> temp;
-	unsigned point = randomUniform((int)(p1.getPath().size() / 3), (int)(p1.getPath().size() / 3)*2);
+	unsigned point = p1.getPath().size() / 2;
 	size_t i = 0;
 	for (; i < point; i++)
 	{
@@ -164,6 +164,7 @@ void TravellingSalesmanSolver::solve(unsigned populationSize, unsigned itermax)
 	}
 	std::cout << "Best solution: " << std::endl << population.at(0).getFitness() << std::endl;
 	printOutTowns(population.at(0).getPath());
+	saveTownsToFile("best", (population.at(0).getPath()));
 }
 
 Town & Path::at(size_t i)
