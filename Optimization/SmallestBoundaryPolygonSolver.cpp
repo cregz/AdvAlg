@@ -185,5 +185,6 @@ void SmallestBoundaryPolygonSolver::solve(unsigned numOfPoints, unsigned itermax
 		}
 	}
 	std::cout << "Solution " << i << ". iter: " << std::endl;
+	std::cout << "Fitness: " << objective(solution) << std::endl;
 	printOutPoints(solution);
 }

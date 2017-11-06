@@ -48,6 +48,9 @@
     <ClInclude Include="TravellingSalesmanSolver.h">
       <Filter>Header Files\Solvers</Filter>
     </ClInclude>
+    <ClInclude Include="PathFindingProblemSolver.h">
+      <Filter>Header Files\Solvers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -69,6 +72,9 @@
       <Filter>Source Files\Solvers</Filter>
     </ClCompile>
     <ClCompile Include="TravellingSalesmanSolver.cpp">
+      <Filter>Source Files\Solvers</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFindingProblemSolver.cpp">
       <Filter>Source Files\Solvers</Filter>
     </ClCompile>
   </ItemGroup>

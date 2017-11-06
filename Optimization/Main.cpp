@@ -6,9 +6,9 @@
 int main()
 {
 	//SmallestBoundaryPolygonSolver solver;
-	//solver.solve(20, 10000, true);
+	//solver.solve(5, 100000, true);
 	TravellingSalesmanSolver solver;
-	solver.solve(100,1000);
+	solver.solve(250,1000);
     return 0;
 }
 
